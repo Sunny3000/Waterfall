@@ -63,25 +63,15 @@ function waterfall(dom, urls, width) {
 		}
 	}
 
+	setImgPosition();
+
 
 	//当窗口大小变化时，重新渲染
 	window.onresize = Debounce(setImgPosition, 500);
 
-	//防抖
-	function Debounce(fn, delay) {
-			var timer = null;
-			return function () {
-				var self = this,
-					args = arguments;
-				clearTimeout(timer);
-				timer = setTimeout(function () {
-					fn.apply(self, args);
-				}, delay);
-			}
-		}
+	
 
 
-	setImgPosition();
 
 
 
