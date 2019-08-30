@@ -11,11 +11,14 @@
 
 	<script src="./index.js"></script>
 	<script src="./ajax.js"></script>
+	<script src="./Debounce.js"></script>
 	<script>
 		
 		var oBox = document.getElementById('box');
 		var urlArr = [];
+		var timer = null;
 
+		ajaxFunc("get", "https://api.unsplash.com/photos/", "client_id=fa60305aa82e74134cabc7093ef54c8e2c370c47e73152f72371c828daedfcd7&page="+(parseInt(Math.random() * 1000))+"&per_page=24", getUrls, true);
 
 		//获取图片URL
 		function getUrls(data) {
@@ -28,7 +31,21 @@
 		}
 
 
-		ajaxFunc("get", "https://api.unsplash.com/photos/", "client_id=fa60305aa82e74134cabc7093ef54c8e2c370c47e73152f72371c828daedfcd7&per_page=50", getUrls, true);
+
+		function compare() {
+			clearTimeout(timer);
+			var page = null;
+			var scrollTop = document.documentElement.scrollTop || window.pageYOffset || document.body.scrollTop;
+		  	// console.log("滚动距离" + ':' + scrollTop);
+		  	if (scrollTop > oBox.clientHeight / 2) {
+		  		pageNum = Math.ceil(Math.random() * 1000);
+		  		timer = setTimeout(function () {
+		  			ajaxFunc("get", "https://api.unsplash.com/photos/", "client_id=fa60305aa82e74134cabc7093ef54c8e2c370c47e73152f72371c828daedfcd7", getUrls, true);
+		  		})
+		  	}
+		}
+
+		window.onscroll = Debounce(compare, 2000);
 
 
 
